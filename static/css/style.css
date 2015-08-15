@@ -1,0 +1,59 @@
+#uniLogo {
+    float: right;
+    width: 256px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+#uniLogoBanner {
+    float: left;
+    width: 150px;
+    padding: 10px;
+    /*border: 1px solid #ccc;*/
+}
+
+#header-text {
+    margin-top: 48px;
+}
+
+.glyphicon-lg {
+    font-size: 5em;
+}
+
+#exp_target {
+    text-align: center;
+}
+
+.memory_image {
+    width: 128px;
+}
+
+.memory_image_large {
+    width: 256px;
+}
+
+#slider {
+    margin: 0 auto;
+    padding: 0;
+    width: 250px;
+    
+    background: #00ff00; /* Old browsers */
+    background: -moz-linear-gradient(left,  #00ff00 0%, #ff0000 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#00ff00), color-stop(100%,#ff0000)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #00ff00 0%,#ff0000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #00ff00 0%,#ff0000 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #00ff00 0%,#ff0000 100%); /* IE10+ */
+    background: linear-gradient(to right,  #00ff00 0%,#ff0000 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ff00', endColorstr='#ff0000',GradientType=1 ); /* IE6-9 */
+
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+}
+
+#slider .ui-slider-handle { 
+    border-color: black; 
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+}

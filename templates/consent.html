@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Consent Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css"></link>
+    <link rel="stylesheet" href="static/css/style.css" type="text/css"></link>
+</head>
+
+<body>
+    <div id="header_template"></div>
+    <div id="container-consent" class="container">
+        <script type="text/javascript">
+        function onExit() {
+            self.close();
+        }
+
+        function startExp() {
+            window.location = 'exp?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}';
+        }
+        </script>
+        <div id="consent_template"></div>
+    </div>
+    <script src="static/lib/require-2.1.17.min.js" data-main="static/js/consent.js"></script>
+</body>
+
+</html>

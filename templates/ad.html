@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <title>The School of Psychology - Ad</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css"></link>
+        
+        <style>
+            #uniLogoBanner {
+                float: left;
+                width: 150px;
+                padding: 10px;
+            }
+
+            #header-text {
+                margin-top: 48px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="header_template"></div>
+        <div id="container-ad" class="container">    
+            {% if assignmentid == "ASSIGNMENT_ID_NOT_AVAILABLE" %}
+                <div id="ad1_template"></div>                                
+            {% else %}
+                <script type="text/javascript">
+                    function begin_experiment() {
+                        popup = window.open(
+                            'consent?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}', 
+                            'Popup', 
+                            'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes' +
+                            // ',resizable=no,width=' + 1024 + ',height=' + 768 + 
+                            ''
+                        );
+                    }
+                </script>
+                <div id="ad2_template"></div>
+           {% endif %}
+        </div>
+
+        <script src="static/lib/require-2.1.17.min.js" data-main="static/js/ad.js"></script>
+    </body>
+</html>
