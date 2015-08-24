@@ -40,29 +40,31 @@ var metacognition_task_exp = function(appModel) {
     //define the blocks of the experiment
     var exp_name_block = {
         type: "text",
-        text: appModel.attributes.meta_title
+        text: appModel.attributes.meta_title,
+        cont_key: "mouse"
     };
 
     var dot_block = {
         type: "text",
         text: appModel.attributes.dot,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.meta_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.meta_timing_post_trial,
+        cont_key: "mouse"
     };
 
     var bird_block = {
         type: "single-stim",
         stimuli: [memory_bird],
         is_html: true,
-        timing_response: appModel.attributes.exp_configCollection.at(0).attributes.meta_image_timing_response,
+        //timing_response: appModel.attributes.exp_configCollection.at(0).attributes.meta_image_timing_response,
         timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.meta_timing_post_trial,
-        // response_ends_trial: false
+        // response_ends_trial: false,
     };
 
     var slider_function_block = {
         type: 'slider',
         timing_trial: appModel.attributes.exp_configCollection.at(0).attributes.meta_slider_timing_trials,
         timing_response: appModel.attributes.exp_configCollection.at(0).attributes.meta_slider_timing_response,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.meta_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.meta_timing_post_trial,
     };
 
     var images_block = {
@@ -78,7 +80,8 @@ var metacognition_task_exp = function(appModel) {
     var instructions_block = {
         type: "text",
         text: appModel.attributes.metacognition_instruction,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.meta_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.meta_timing_post_trial,
+        cont_key: "mouse"
     };
 
     var star_n_cloud_block = {
@@ -115,7 +118,8 @@ var metacognition_task_exp = function(appModel) {
                 }
                 return appModel.attributes.maybe;
             }
-        }
+        },
+        cont_key: "mouse"
     };
 
     var debrief_block = {
@@ -126,7 +130,8 @@ var metacognition_task_exp = function(appModel) {
                 'response_time': getAverageResponseTime(),
                 'total_score': appModel.attributes.total_points
             });
-        }
+        },
+        cont_key: "mouse"
     }
 
     //function to check if the user was sure
@@ -146,7 +151,7 @@ var metacognition_task_exp = function(appModel) {
     //else return false
     var getResponse = function() {
         var trials = jsPsych.data.getTrialsOfType('single-stim');
-        console.log(trials);
+
         var current_trial = 0;
         //consider last three trails
         current_trial = trials.length - 1;
@@ -200,7 +205,7 @@ var metacognition_task_exp = function(appModel) {
     experiment_blocks.push(exp_name_block);
     experiment_blocks.push(dot_block);
     experiment_blocks.push(bird_block);
-    experiment_blocks.push(slider_function_block);
+    //experiment_blocks.push(slider_function_block);
     experiment_blocks.push(images_block);
     experiment_blocks.push(instructions_block);
     experiment_blocks.push(star_n_cloud_block);
@@ -226,12 +231,14 @@ var metacognition_task_exp = function(appModel) {
             //if the user reaches 5 points then call test exp
             if (appModel.attributes.meta_exp_points == appModel.attributes.exp_configCollection.at(0).attributes.meta_min_points) {
                 //call test exp
-                appModel.attributes.test_random_val = Math.floor((Math.random() * 2) + 1);
-                if (appModel.attributes.test_random_val == 1) {
-                    testing_task_exp(appModel);
-                } else {
-                    testing_priming_task_exp(appModel);
-                }
+                //appModel.attributes.test_random_val = Math.floor((Math.random() * 2) + 1);
+                //if (appModel.attributes.test_random_val == 1) {
+                    //testing_task_exp(appModel);
+                //} else {
+                    //testing_priming_task_exp(appModel);
+                //}
+
+                questionaire_task_exp(appModel);
             }
             //else restart the test.
             else {

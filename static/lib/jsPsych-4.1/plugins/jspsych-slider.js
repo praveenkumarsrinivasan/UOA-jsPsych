@@ -56,6 +56,7 @@
             // display_element.append('<br/><p>Press any key to continue</p>');
 
             $('#slider')
+                .css("margin-top", (Math.floor(Math.random() * 200) + 1).toString() + 'px')
                 .slider({
                     min: 0,
                     max: 2000,

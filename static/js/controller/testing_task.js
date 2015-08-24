@@ -37,13 +37,15 @@ var testing_task_exp = function(appModel) {
     //define the blocks of the experiment
     var exp_name_block = {
         type: "text",
-        text: appModel.attributes.test_title
+        text: appModel.attributes.test_title,
+        cont_key: "mouse"
     };
 
     var dot_block = {
         type: "text",
         text: appModel.attributes.dot,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_timing_post_trial,
+        cont_key: "mouse"
     };
 
     var bird_block = {
@@ -52,14 +54,15 @@ var testing_task_exp = function(appModel) {
         is_html: true,
         timing_response: appModel.attributes.exp_configCollection.at(0).attributes.test_image_timing_response,
         timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_timing_post_trial,
-        // response_ends_trial: false
+        // response_ends_trial: false,
+        cont_key: "mouse"
     };
 
     var slider_function_block = {
         type: 'slider',
         timing_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_slider_timing_trials,
         timing_response: appModel.attributes.exp_configCollection.at(0).attributes.test_slider_timing_response,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_timing_post_trial,
     };
 
     var images_block = {
@@ -80,13 +83,15 @@ var testing_task_exp = function(appModel) {
         case 1:
             star_n_cloud_block = {
                 type: "text",
-                text: appModel.attributes.star
+                text: appModel.attributes.star,
+                cont_key: "mouse"
             }
             break;
         case 2:
             star_n_cloud_block = {
                 type: "text",
-                text: appModel.attributes.cloud
+                text: appModel.attributes.cloud,
+                cont_key: "mouse"
             }
             break;
         case 3:
@@ -174,7 +179,8 @@ var testing_task_exp = function(appModel) {
                 'response_time': getAverageResponseTime(),
                 'total_score': appModel.attributes.total_points
             });
-        }
+        },
+        cont_key: "mouse"
     }
 
     //function to check if the user was sure

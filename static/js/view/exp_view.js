@@ -6,6 +6,7 @@ require(
         'static/js/controller/prt_task.js',
         'static/js/controller/memory_task.js',
         'static/js/controller/metacognition_task.js',
+        'static/js/controller/questionaire_task.js',
         'static/js/controller/testing_task.js',
         'static/js/controller/testing_priming_task.js',
         'text',
@@ -22,6 +23,9 @@ require(
         'text!exp/memory_bird.html',
         'text!exp/memory_images.html',
         'text!exp/metacognition_instruction.html',
+        'text!exp/questionaire_title.html',
+        'text!exp/questionaire1.html',
+        'text!exp/questionaire2.html',
         'text!exp/testing_bird.html',
         'text!exp/testing_bird_large.html',
         'text!exp/testing_images.html',
@@ -39,12 +43,13 @@ require(
     function(
         ConfigCollection, AppModel,
         flow,
-        prt_task, memory_task, metacognition_task, testing_task, testing_priming_task,
+        prt_task, memory_task, metacognition_task, questionaire_task, testing_task, testing_priming_task,
         text, header,
         prt_title, memory_title, meta_title, test_title, priming_title,
         prt_welcome, prt_intro_instruction,
         memory_instruction1, memory_instruction2, memory_bird, memory_images,
         metacognition_instruction,
+        questionaire_title, questionaire1, questionaire2,
         testing_bird, testing_bird_large, testing_images,
         response_time, star, star_cloud, cloud, dot, correct, incorrect, maybe,
         exp_fail, exp_complete) {
@@ -90,6 +95,10 @@ require(
                     //meta-cognition templates
                     metacognition_instruction : metacognition_instruction,
 
+                    questionaire_title : questionaire_title,
+                    questionaire1 : questionaire1,
+                    questionaire2 : questionaire2,
+
                     testing_bird : testing_bird,
                     testing_bird_large : testing_bird_large,
                     testing_images : testing_images,
@@ -112,16 +121,23 @@ require(
                     prt_exp_points : 0,
                     mem_exp_points : 0,
                     meta_exp_points : 0,
+                    questionaire_exp_points : 0,
+
                     test_exp_points : 0,
                     test_priming_exp_points : 0,
+
                     prt_retry_times : 0,
                     mem_retry_times : 0,
                     meta_retry_times : 0,
+
+                    questionaire_retry_times : 0,
+                    questionaire1_correct_ans : 1,
+                    questionaire2_correct_ans : 2,
+
                     test_retry_times : 0,
                     test_priming_retry_times : 0,
 
                     test_random_val : 0,
-
                     testing_configCollection : testing_configCollection,
                 });
 

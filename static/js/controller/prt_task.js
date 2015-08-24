@@ -6,45 +6,63 @@
 
 var prt_task_exp = function(appModel) {
 
+    //variable to hold the result
+    var res;
+
     //define blocks of the experiment
     var exp_name_block = {
         type: "text",
-        text: appModel.attributes.prt_title
+        text: appModel.attributes.prt_title,
+        cont_key: "mouse"
     };
 
     var welcome_block = {
         type: "text",
-        text: appModel.attributes.prt_welcome
+        text: appModel.attributes.prt_welcome,
+        cont_key: "mouse"
     };
 
     var instructions_block = {
         type: "text",
         text: appModel.attributes.prt_intro_instruction,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.prt_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.prt_timing_post_trial,
+        cont_key: "mouse"
     };
 
     var slider_function_block1 = {
         type: 'slider',
         timing_trial: [200],
-        timing_response: appModel.attributes.exp_configCollection.at(0).attributes.prt_slider_timing_response
+        timing_response: appModel.attributes.exp_configCollection.at(0).attributes.prt_slider_timing_response,
     };
 
     var dot_block = {
         type: "text",
         text: appModel.attributes.dot,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.prt_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.prt_timing_post_trial,
+        cont_key: "mouse"
     };
 
     var slider_function_block2 = {
         type: 'slider',
         timing_trial: appModel.attributes.exp_configCollection.at(0).attributes.prt_slider_timing_trials,
         timing_response: appModel.attributes.exp_configCollection.at(0).attributes.prt_slider_timing_response,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.prt_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.prt_timing_post_trial,
     };
 
-    var correct_block = {
+    var response_block = {
         type: "text",
-        text: appModel.attributes.correct
+        text: function() {
+            res = getAverageResponseTime();
+            if (appModel.attributes.exp_configCollection.at(0).attributes.prt_slider_timing_trials.length == res.valid_trial_count) {
+                //if the user succeeds then award them '1' point 
+                return appModel.attributes.correct;
+            }
+            //else display the incorrect template
+            else {
+                return appModel.attributes.incorrect;
+            }
+        },
+        cont_key: "mouse"
     };
 
     var debrief_block = {
@@ -52,17 +70,17 @@ var prt_task_exp = function(appModel) {
         text: function() {
             var template = _.template(appModel.attributes.response_time);
             return template({
-                'response_time': getAverageResponseTime(),
+                'response_time': res.response_time,
                 'total_score': appModel.attributes.total_points
             });
-        }
+        },
+        cont_key: "mouse"
     }
 
     //function to compute the average response time
     //for trials where handle was clicked
     var getAverageResponseTime = function() {
         var trials = jsPsych.data.getTrialsOfType('slider');
-        console.log(trials)
 
         var sum_rt = 0;
         var valid_trial_count = 0;
@@ -78,12 +96,18 @@ var prt_task_exp = function(appModel) {
                 valid_trial_count++;
             }
         }
+
         //if the user succeeds then award them '1' point
         if (appModel.attributes.exp_configCollection.at(0).attributes.prt_slider_timing_trials.length == valid_trial_count) {
             appModel.attributes.prt_exp_points++;
             appModel.attributes.total_points++;
         }
-        return Math.floor(sum_rt / valid_trial_count);
+
+        //return response_time
+        return {
+            response_time: Math.floor(sum_rt / valid_trial_count),
+            valid_trial_count: valid_trial_count,
+        }
     }
 
     //blocks in the experiment
@@ -94,7 +118,7 @@ var prt_task_exp = function(appModel) {
     experiment_blocks.push(slider_function_block1);
     experiment_blocks.push(dot_block);
     experiment_blocks.push(slider_function_block2);
-    experiment_blocks.push(correct_block);
+    experiment_blocks.push(response_block);
     experiment_blocks.push(debrief_block);
 
     jsPsych.init({

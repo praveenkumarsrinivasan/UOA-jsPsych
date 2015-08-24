@@ -40,56 +40,61 @@ var memory_task_exp = function(appModel) {
     //define the blocks of the experiment
     var exp_name_block = {
         type: "text",
-        text: appModel.attributes.memory_title
+        text: appModel.attributes.memory_title,
+        cont_key: "mouse"
     };
 
     var dot_block = {
         type: "text",
         text: appModel.attributes.dot,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial,
+        cont_key: "mouse"
     };
 
     var instructions_block1 = {
         type: "text",
         text: appModel.attributes.memory_instruction1,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial,
+        cont_key: "mouse"
     };
 
     var bird_block = {
         type: "single-stim",
         stimuli: [memory_bird],
         is_html: true,
-        timing_response: appModel.attributes.exp_configCollection.at(0).attributes.memory_image_timing_response,
+        //timing_response: appModel.attributes.exp_configCollection.at(0).attributes.memory_image_timing_response,
         timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial,
-        // response_ends_trial: false
+        // response_ends_trial: false,
     };
 
     var slider_function_block = {
         type: 'slider',
         timing_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_slider_timing_trials,
         timing_response: appModel.attributes.exp_configCollection.at(0).attributes.memory_slider_timing_response,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial,
     };
 
     var instructions_block2 = {
         type: "text",
         text: appModel.attributes.memory_instruction2,
-        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial
+        timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial,
+        cont_key: "mouse"
     };
 
     var images_block = {
         type: "single-stim",
         stimuli: [memory_images],
         is_html: true,
-        timing_response: appModel.attributes.exp_configCollection.at(0).attributes.memory_image_timing_response + 10000,
+        //timing_response: appModel.attributes.exp_configCollection.at(0).attributes.memory_image_timing_response + 10000,
         timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.memory_timing_post_trial,
         choices: [49, 50, 51]
-            // response_ends_trial: false
+        // response_ends_trial: false
     };
 
     var star_block = {
         type: "text",
         text: appModel.attributes.star,
+        cont_key: "mouse"
     };
 
     var response_block = {
@@ -106,7 +111,8 @@ var memory_task_exp = function(appModel) {
             else {
                 return appModel.attributes.incorrect;
             }
-        }
+        },
+        cont_key: "mouse"
     };
 
     var debrief_block = {
@@ -117,7 +123,8 @@ var memory_task_exp = function(appModel) {
                 'response_time': getAverageResponseTime(),
                 'total_score': appModel.attributes.total_points
             });
-        }
+        },
+        cont_key: "mouse"
     }
 
     //if the user chose the right image then return true
@@ -175,8 +182,8 @@ var memory_task_exp = function(appModel) {
     experiment_blocks.push(dot_block);
     experiment_blocks.push(instructions_block1);
     experiment_blocks.push(bird_block);
-    experiment_blocks.push(slider_function_block);
-    experiment_blocks.push(instructions_block2);
+    //experiment_blocks.push(slider_function_block);
+    //experiment_blocks.push(instructions_block2);
     experiment_blocks.push(images_block);
     experiment_blocks.push(star_block);
     experiment_blocks.push(response_block);
