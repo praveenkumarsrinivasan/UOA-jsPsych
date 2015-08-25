@@ -7,8 +7,10 @@
 var testing_task_exp = function(appModel) {
 
     var allocationType = appModel.attributes.testing_configCollection.at(0).attributes.allocationType;
-    var memory_images = appModel.attributes.testing_configCollection.at(0).attributes.allocation[appModel.attributes.test_retry_times];
-    var memory_bird = memory_images[0];
+    //var memory_images = appModel.attributes.testing_configCollection.at(0).attributes.allocation2[appModel.attributes.test_retry_times];
+    //var memory_bird = memory_images[0];
+    var memory_bird = appModel.attributes.testing_configCollection.at(0).attributes.allocation2[appModel.attributes.test_retry_times];
+    var memory_images = [' manipulation x', ' manipulation', ' original'];
     memory_images = _.shuffle(memory_images);
 
     //compile the html templates
@@ -17,8 +19,9 @@ var testing_task_exp = function(appModel) {
     var testing_images_template = _.template(appModel.attributes.testing_images);
 
     var testing_bird;
-    var allocationIndex = parseInt((memory_bird-1)/10, 10);
-    console.log(allocationType[allocationIndex]);
+    var allocationIndex = parseInt((memory_bird-1)/8, 10);
+    //console.log(allocationIndex);
+    //console.log(allocationType[allocationIndex]);
     if (allocationType[allocationIndex] == "large size") {
         testing_bird = testing_bird_large_template({
             'memory_bird_number': memory_bird + ' condition'
@@ -29,9 +32,9 @@ var testing_task_exp = function(appModel) {
         });
     }
     var testing_images = testing_images_template({
-        'memory_image_number_1': memory_images[0],
-        'memory_image_number_2': memory_images[1],
-        'memory_image_number_3': memory_images[2]
+        'memory_image_number_1': memory_bird + memory_images[0],
+        'memory_image_number_2': memory_bird + memory_images[1],
+        'memory_image_number_3': memory_bird + memory_images[2]
     });
 
     //define the blocks of the experiment
@@ -52,10 +55,9 @@ var testing_task_exp = function(appModel) {
         type: "single-stim",
         stimuli: [testing_bird],
         is_html: true,
-        timing_response: appModel.attributes.exp_configCollection.at(0).attributes.test_image_timing_response,
+        //timing_response: appModel.attributes.exp_configCollection.at(0).attributes.test_image_timing_response,
         timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_timing_post_trial,
         // response_ends_trial: false,
-        cont_key: "mouse"
     };
 
     var slider_function_block = {
@@ -63,6 +65,19 @@ var testing_task_exp = function(appModel) {
         timing_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_slider_timing_trials,
         timing_response: appModel.attributes.exp_configCollection.at(0).attributes.test_slider_timing_response,
         timing_post_trial: appModel.attributes.exp_configCollection.at(0).attributes.test_timing_post_trial,
+    };
+
+    var slider_check_chunk_loop = {
+        chunk_type: "while",
+        timeline: [slider_function_block],
+        continue_function: function(data) {
+            var res = getAverageResponseTime().valid_trial_count;
+            if (res == appModel.attributes.exp_configCollection.at(0).attributes.test_priming_slider_timing_trials.length) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     };
 
     var images_block = {
@@ -168,7 +183,8 @@ var testing_task_exp = function(appModel) {
                     return appModel.attributes.maybe;
                 }
             }
-        }
+        },
+        cont_key: "mouse"
     };
 
     var debrief_block = {
@@ -176,7 +192,7 @@ var testing_task_exp = function(appModel) {
         text: function() {
             var template = _.template(appModel.attributes.response_time);
             return template({
-                'response_time': getAverageResponseTime(),
+                'response_time': getAverageResponseTime().response_time,
                 'total_score': appModel.attributes.total_points
             });
         },
@@ -211,12 +227,14 @@ var testing_task_exp = function(appModel) {
         }
 
         //get the image number of the bird displayed
-        var re1 = /(\d* condition.png)/gi
-        var re2 = /(\d*.png)/gi
-        console.log(trials);
-        console.log(current_trial);
+        var re1 = /(\d* condition.png)/gi; // regex to match displayed image
+        var re2 = /(\d* (original|manipulation|manipulation x).png)/gi; // regex to match 
+        //console.log(trials);
+        //console.log(current_trial);
         var num = (trials[current_trial - 2].stimulus).match(re1);
         var image_num = parseInt(num[0].toLowerCase().replace(' condition.png', ''), 10);
+        image_num = image_num + ' original';
+        //console.log(image_num);
 
         //get the image number chosen by the user
         var choice = -1;
@@ -224,7 +242,8 @@ var testing_task_exp = function(appModel) {
             var key_press = parseInt(String.fromCharCode(trials[current_trial - 1].key_press), 10) - 1;
             //-1 because we have to chose the corresponding user choice image in the array
             num = (trials[current_trial - 1].stimulus).match(re2);
-            choice = parseInt(num[key_press].toLowerCase().replace('.png', ''), 10);
+            choice = num[key_press].toLowerCase().replace('.png', '');
+            //console.log(choice);
         }
 
         if (image_num == choice) {
@@ -253,14 +272,17 @@ var testing_task_exp = function(appModel) {
                 valid_trial_count++;
             }
         }
-        return Math.floor(sum_rt / valid_trial_count);
+        return {
+            response_time : Math.floor(sum_rt / valid_trial_count),
+            valid_trial_count: valid_trial_count
+        }
     }
 
     var experiment_blocks = [];
     experiment_blocks.push(exp_name_block);
     experiment_blocks.push(dot_block);
     experiment_blocks.push(bird_block);
-    experiment_blocks.push(slider_function_block);
+    experiment_blocks.push(slider_check_chunk_loop);
     experiment_blocks.push(images_block);
     experiment_blocks.push(star_n_cloud_block);
     experiment_blocks.push(response_block);
@@ -285,8 +307,10 @@ var testing_task_exp = function(appModel) {
                     }
                 });
             } else {
-                var val = appModel.attributes.testing_configCollection.at(0).attributes.allocation[appModel.attributes.test_retry_times][0];
-                var allocation = allocationType[parseInt((val-1)/10, 10)];
+                var val = appModel.attributes.testing_configCollection.at(0).attributes.allocation2[appModel.attributes.test_retry_times];
+                var allocation = allocationType[parseInt((val-1)/8, 10)];
+                //console.log(val);
+                //console.log(allocation);
                 if (allocation == 'related prime' || allocation == 'unrelated prime') {
                     testing_priming_task_exp(appModel);
                 } else {

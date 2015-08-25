@@ -9,13 +9,11 @@
     "meta_min_points": 5,
     "questionaire_min_points": 2,
 
-
-    "test_retry_times" : 2,
-    "test_priming_retry_times" : 2,
+    "test_retry_times" : 56,
+    "test_priming_retry_times" : 56,
 
     "test_min_points": 0,
     "test_priming_points": 0,
-
 
     "prt_slider_timing_trials": [160, 200, 260, 220],
     "prt_slider_timing_response": 6000,
